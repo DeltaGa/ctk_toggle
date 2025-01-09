@@ -18,13 +18,13 @@ Import modules:
 ```python
 from ctk_toggle import CTkToggleButton, ToggleGroup
 ```
-Check the examples/ directory for usage examples.
+Check the [examples/](https://github.com/DeltaGa/ctk_toggle/tree/main/examples) directory for usage examples.
 
 ## Contributing
-See CONTRIBUTING.md.
+See [CONTRIBUTING.md](https://github.com/DeltaGa/ctk_toggle/blob/main/CONTRIBUTING.md).
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/DeltaGa/ctk_toggle/blob/main/LICENSE) file for details.
 
 ## Documentation
 **CTkToggleGroup**
