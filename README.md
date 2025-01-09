@@ -133,7 +133,7 @@ class CTkToggleButton(ctk.CTkButton):
         master=None,
         toggle_color: str = "#c1e2c5",
         disable_color: str = "lightgrey",
-        toggle_group: Optional["CTkToggleGroup"] = None,
+        toggle_group: Optional[Any] = None,
         **kwargs,
     ):
         """

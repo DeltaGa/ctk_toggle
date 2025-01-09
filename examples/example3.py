@@ -7,8 +7,12 @@ Created: Wed Aug 7, 2024
 """
 
 import customtkinter as ctk
-from ctk_toggle_button import CTkToggleButton
-from ctk_toggle_group import CTkToggleGroup
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from ctk_toggle.ctk_toggle_button import CTkToggleButton
+from ctk_toggle.ctk_toggle_group import CTkToggleGroup
 
 # Create the application window
 app = ctk.CTk()
@@ -21,7 +25,7 @@ group = CTkToggleGroup()
 def add_button():
     new_button = CTkToggleButton(
         master=app,
-        text=f"Button {len(group.get_buttons()) + 1}",
+        text=f"Button {len(group.buttons) + 1}",
         toggle_color="#af52de",
         command=lambda: print(f"{new_button.cget('text')} is active!")
     )
@@ -31,7 +35,7 @@ def add_button():
 # Remove the last button dynamically
 def remove_button():
     if group.get_buttons():
-        last_button = group.get_buttons()[-1]
+        last_button = group.buttons[-1]
         last_button.destroy()
         group.remove_button(last_button)
 

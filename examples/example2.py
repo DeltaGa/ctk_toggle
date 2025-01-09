@@ -7,8 +7,12 @@ Created: Wed Aug 7, 2024
 """
 
 import customtkinter as ctk
-from ctk_toggle_button import CTkToggleButton
-from ctk_toggle_group import CTkToggleGroup
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from ctk_toggle.ctk_toggle_button import CTkToggleButton
+from ctk_toggle.ctk_toggle_group import CTkToggleGroup
 
 # Create the application window
 app = ctk.CTk()

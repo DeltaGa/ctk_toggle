@@ -7,8 +7,7 @@ Created: Wed Aug 7, 2024
 """
 
 import customtkinter as ctk
-from typing import Optional
-from ctk_toggle_group import CTkToggleGroup
+from typing import Optional, Any
 
 
 class CTkToggleButton(ctk.CTkButton):
@@ -17,7 +16,7 @@ class CTkToggleButton(ctk.CTkButton):
         master=None,
         toggle_color: str = "#c1e2c5",
         disable_color: str = "lightgrey",
-        toggle_group: Optional["CTkToggleGroup"] = None,
+        toggle_group: Optional[Any] = None,
         **kwargs,
     ):
         """
@@ -34,6 +33,8 @@ class CTkToggleButton(ctk.CTkButton):
             ValueError: If toggle_color or disable_color is not a string.
             TypeError: If toggle_group is not an instance of CTkToggleGroup or None.
         """
+        from .ctk_toggle_group import CTkToggleGroup
+        
         if not isinstance(toggle_color, str):
             raise ValueError("toggle_color must be a string.")
         if not isinstance(disable_color, str):

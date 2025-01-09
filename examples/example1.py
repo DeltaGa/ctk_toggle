@@ -7,7 +7,11 @@ Created: Wed Aug 7, 2024
 """
 
 import customtkinter as ctk
-from ctk_toggle_button import CTkToggleButton
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from ctk_toggle.ctk_toggle_button import CTkToggleButton
 
 # Create a simple application window
 app = ctk.CTk()
@@ -21,7 +25,7 @@ def on_toggle():
 toggle_button = CTkToggleButton(
     master=app,
     text="Toggle Me",
-    toggle_color="#58a6ff",
+    toggle_color="#68a6ff",
     command=on_toggle
 )
 toggle_button.pack(pady=50)
