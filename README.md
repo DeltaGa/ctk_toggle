@@ -19,9 +19,7 @@ Import modules:
 from ctk_toggle import CTkToggleButton, CTkToggleGroup
 ```
 Check the [examples/](https://github.com/DeltaGa/ctk_toggle/tree/main/examples) directory for usage examples.
-Clean and beautiful UI made easier with `ctk_toggle` by saving precious space.
-https://github.com/user-attachments/assets/36be28da-12be-4f27-994e-fe82e4cd7e9f
-
+Clean and beautiful UI made easier with `ctk_toggle` by saving precious space. See the [demonstration video](https://github.com/user-attachments/assets/36be28da-12be-4f27-994e-fe82e4cd7e9f).
 
 ## Contributing
 See [CONTRIBUTING.md](https://github.com/DeltaGa/ctk_toggle/blob/main/CONTRIBUTING.md).
