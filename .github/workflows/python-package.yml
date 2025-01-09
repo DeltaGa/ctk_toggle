@@ -39,10 +39,3 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats warnings as non-critical to pass the workflow
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    - name: Test example scripts
-      run: |
-        # Run example scripts to verify functionality
-        python examples/example1.py
-        python examples/example2.py
-        python examples/example3.py

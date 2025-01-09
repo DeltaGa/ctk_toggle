@@ -14,8 +14,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from ctk_toggle.ctk_toggle_button import CTkToggleButton
 from ctk_toggle.ctk_toggle_group import CTkToggleGroup
 
-os.environ['DISPLAY'] = ':0.0'
-
 # Create the application window
 app = ctk.CTk()
 app.geometry("500x400")
