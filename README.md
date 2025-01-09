@@ -1,7 +1,7 @@
 # ctk_toggle: CustomTkinter Toggle Buttons and Groups
 
 ## Overview
-`ctk_toggle` is a lightweight Python package for creating toggle buttons and groups using CustomTkinter.
+`ctk_toggle` is a lightweight and easy-to-use Python package designed to simplify the creation and management of toggle buttons and toggle groups using CustomTkinter. With it, you can seamlessly integrate visually appealing toggle buttons into your CustomTkinter-based GUI applications. The package supports dynamic group behavior, customizable colors, and robust state management, making it ideal for modern, interactive user interfaces.
 
 ## Features
 - Create toggle buttons with customizable states.
