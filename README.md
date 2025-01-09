@@ -1,4 +1,3 @@
-# ctk_toggle: CustomTkinter Toggle Buttons and Groups
 <img src="https://github.com/DeltaGa/ctk_toggle/blob/main/assets/thumbnail.jpg" alt="thumbnail">
 
 ## Overview
@@ -21,7 +20,7 @@ from ctk_toggle import CTkToggleButton, CTkToggleGroup
 ```
 Check the [examples/](https://github.com/DeltaGa/ctk_toggle/tree/main/examples) directory for usage examples.
 Clean and beautiful UI made easier with `ctk_toggle` by saving precious space.
-![demonstration video](https://github.com/DeltaGa/ctk_toggle/blob/main/assets/demo.mp4)
+![demonstration video](https://github.com/user-attachments/assets/177e50ae-a0a8-4eac-b968-b7c3a6692d01)
 
 ## Contributing
 See [CONTRIBUTING.md](https://github.com/DeltaGa/ctk_toggle/blob/main/CONTRIBUTING.md).
