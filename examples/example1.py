@@ -13,6 +13,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from ctk_toggle.ctk_toggle_button import CTkToggleButton
 
+os.environ['DISPLAY'] = ':0.0'
+
 # Create a simple application window
 app = ctk.CTk()
 app.geometry("400x200")
