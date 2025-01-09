@@ -16,7 +16,7 @@ pip install ctk_toggle
 ## Usage
 Import modules:
 ```python
-from ctk_toggle import CTkToggleButton, ToggleGroup
+from ctk_toggle import CTkToggleButton, CTkToggleGroup
 ```
 Check the [examples/](https://github.com/DeltaGa/ctk_toggle/tree/main/examples) directory for usage examples.
 
