@@ -210,7 +210,7 @@ class CTkToggleButton(ctk.CTkButton):
 ## Credits
 
 ### Author
-- **Tchicdje Kouojip Joram Smith (DeltaGa)**  
+- **T. K. Joram Smith (DeltaGa)**  
   Creator and developer of the CTkToggleButton and CTkToggleGroup classes.  
   
   Email: dev.github.tkjoramsmith@outlook.com
