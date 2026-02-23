@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ctk_toggle",
-    version="1.0.1",
+    version="1.0.2",
     description="A lightweight Python package for creating toggle buttons and groups using CustomTkinter.",
     author="Tchicdje Kouojip Joram Smith (DeltaGa)",
     author_email="dev.github.tkjoramsmith@outlook.com",
