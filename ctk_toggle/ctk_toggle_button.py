@@ -17,6 +17,7 @@ class CTkToggleButton(ctk.CTkButton):
         toggle_color: str = "#c1e2c5",
         disable_color: str = "lightgrey",
         toggle_group: Optional[Any] = None,
+        skip_runtime_errors: bool = True,
         **kwargs,
     ):
         """
@@ -27,21 +28,23 @@ class CTkToggleButton(ctk.CTkButton):
             toggle_color (str): Color when toggled.
             disable_color (str): Color when disabled.
             toggle_group (Optional[CTkToggleGroup]): Group to coordinate toggling.
+            skip_runtime_errors (bool): If True, suppress RuntimeErrors raised by state
+                guard checks in toggle(), get_toggle_state(), enable(), and disable().
             **kwargs: Additional keyword arguments for CTkButton.
-        
+
         Raises:
             ValueError: If toggle_color or disable_color is not a string.
             TypeError: If toggle_group is not an instance of CTkToggleGroup or None.
         """
         from .ctk_toggle_group import CTkToggleGroup
-        
+
         if not isinstance(toggle_color, str):
             raise ValueError("toggle_color must be a string.")
         if not isinstance(disable_color, str):
             raise ValueError("disable_color must be a string.")
         if toggle_group is not None and not isinstance(toggle_group, CTkToggleGroup):
             raise TypeError("toggle_group must be an instance of CTkToggleGroup or None.")
-        
+
         super().__init__(master, **kwargs)
         self.toggle_state = False
         self.toggle_color = toggle_color
@@ -49,6 +52,7 @@ class CTkToggleButton(ctk.CTkButton):
         self.default_fg_color = self.cget("fg_color")
         self.toggle_group = toggle_group
         self._state = "normal"
+        self.skip_runtime_errors = skip_runtime_errors
         self.bind("<Button-1>", self.toggle)
 
     def toggle(self, event=None):
@@ -68,7 +72,8 @@ class CTkToggleButton(ctk.CTkButton):
                 self.toggle_state = not self.toggle_state
                 self._update_fg_color()
         else:
-            raise RuntimeError("Cannot toggle button when it is disabled.")
+            if not self.skip_runtime_errors:
+                raise RuntimeError("Cannot toggle button when it is disabled.")
 
     def set_toggle_state(self, state: bool):
         """
@@ -97,7 +102,8 @@ class CTkToggleButton(ctk.CTkButton):
             RuntimeError: If the button is in an invalid state.
         """
         if self._state != "normal":
-            raise RuntimeError("Cannot get toggle state when button is disabled.")
+            if not self.skip_runtime_errors:
+                raise RuntimeError("Cannot get toggle state when button is disabled.")
         
         return self.toggle_state
 
@@ -109,7 +115,9 @@ class CTkToggleButton(ctk.CTkButton):
             RuntimeError: If the button is already enabled.
         """
         if self._state == "normal":
-            raise RuntimeError("Button is already enabled.")
+            if not self.skip_runtime_errors:
+                raise RuntimeError("Button is already enabled.")
+            return
         
         self._state = "normal"
         if not self.toggle_state:
@@ -123,7 +131,9 @@ class CTkToggleButton(ctk.CTkButton):
             RuntimeError: If the button is already disabled.
         """
         if self._state == "disabled":
-            raise RuntimeError("Button is already disabled.")
+            if not self.skip_runtime_errors:
+                raise RuntimeError("Button is already disabled.")
+            return
         
         self._state = "disabled"
         self.set_toggle_state(False)
@@ -137,4 +147,3 @@ class CTkToggleButton(ctk.CTkButton):
         """
         new_color = self.toggle_color if self.toggle_state else self.default_fg_color
         self.configure(fg_color=new_color)
-
