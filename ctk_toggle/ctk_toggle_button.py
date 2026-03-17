@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 CTkToggleButton: A CustomTkinter button with toggle functionality.
 
@@ -6,8 +5,9 @@ Author: Tchicdje Kouojip Joram Smith (DeltaGa)
 Created: Wed Aug 7, 2024
 """
 
+from typing import Any, Optional
+
 import customtkinter as ctk
-from typing import Optional, Any
 
 
 class CTkToggleButton(ctk.CTkButton):
@@ -59,18 +59,24 @@ class CTkToggleButton(ctk.CTkButton):
         """
         Handle button toggle behavior.
 
+        When the button belongs to a ``CTkToggleGroup``, all state management
+        is delegated to the group's command wrapper (fired on ``<ButtonRelease-1>``).
+        This binding (``<Button-1>``) must therefore do nothing in that case —
+        acting here would unconditionally activate the button and prevent the
+        group from implementing deactivate-on-reclick logic.
+
         Args:
             event: The event that triggered the toggle.
-        
+
         Raises:
             RuntimeError: If the button is in an invalid state.
         """
         if self._state == "normal":
-            if self.toggle_group:
-                self.toggle_group.set_active_button(self)
-            else:
+            if not self.toggle_group:
+                # Standalone button: flip state directly.
                 self.toggle_state = not self.toggle_state
                 self._update_fg_color()
+            # In-group: let the group's command wrapper handle everything.
         else:
             if not self.skip_runtime_errors:
                 raise RuntimeError("Cannot toggle button when it is disabled.")
@@ -81,13 +87,13 @@ class CTkToggleButton(ctk.CTkButton):
 
         Args:
             state (bool): The new toggle state.
-        
+
         Raises:
             ValueError: If state is not a boolean.
         """
         if not isinstance(state, bool):
             raise ValueError("state must be a boolean.")
-        
+
         self.toggle_state = state
         self._update_fg_color()
 
@@ -97,20 +103,19 @@ class CTkToggleButton(ctk.CTkButton):
 
         Returns:
             bool: The current toggle state.
-        
+
         Raises:
             RuntimeError: If the button is in an invalid state.
         """
-        if self._state != "normal":
-            if not self.skip_runtime_errors:
-                raise RuntimeError("Cannot get toggle state when button is disabled.")
-        
+        if self._state != "normal" and not self.skip_runtime_errors:
+            raise RuntimeError("Cannot get toggle state when button is disabled.")
+
         return self.toggle_state
 
     def enable(self):
         """
         Enable the button.
-        
+
         Raises:
             RuntimeError: If the button is already enabled.
         """
@@ -118,7 +123,7 @@ class CTkToggleButton(ctk.CTkButton):
             if not self.skip_runtime_errors:
                 raise RuntimeError("Button is already enabled.")
             return
-        
+
         self._state = "normal"
         if not self.toggle_state:
             self.configure(fg_color=self.default_fg_color)
@@ -126,7 +131,7 @@ class CTkToggleButton(ctk.CTkButton):
     def disable(self):
         """
         Disable the button.
-        
+
         Raises:
             RuntimeError: If the button is already disabled.
         """
@@ -134,7 +139,7 @@ class CTkToggleButton(ctk.CTkButton):
             if not self.skip_runtime_errors:
                 raise RuntimeError("Button is already disabled.")
             return
-        
+
         self._state = "disabled"
         self.set_toggle_state(False)
         self.configure(fg_color=self.disable_color)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 ctk_toggle: A package for creating toggle buttons and groups with CustomTkinter.
 

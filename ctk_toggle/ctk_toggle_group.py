@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 CTkToggleGroup: A group for managing toggle buttons.
 
@@ -7,18 +6,28 @@ Created: Wed Aug 7, 2024
 """
 
 from typing import List, Optional
+
 from .ctk_toggle_button import CTkToggleButton
 
 
 class CTkToggleGroup:
-    def __init__(self, buttons: Optional[List[CTkToggleButton]] = None, disable_color: str = "lightgrey"):
+    def __init__(
+        self,
+        buttons: Optional[List[CTkToggleButton]] = None,
+        disable_color: str = "lightgrey",
+        allow_deactivate: bool = False,
+    ):
         """
         Initialize a CTkToggleGroup.
 
         Args:
             buttons (Optional[List[CTkToggleButton]]): List of buttons in the group.
             disable_color (str): Color for disabled buttons.
-        
+            allow_deactivate (bool): When True, clicking the currently-active button
+                will deactivate it (leaving no button active).  When False (default),
+                the group behaves like a radio-button set where exactly one button is
+                always active once a selection has been made.
+
         Raises:
             TypeError: If buttons is not a list of CTkToggleButton instances or None.
             ValueError: If disable_color is not a string.
@@ -30,6 +39,7 @@ class CTkToggleGroup:
 
         self.buttons = buttons or []
         self.disable_color = disable_color
+        self.allow_deactivate = allow_deactivate
         for button in self.buttons:
             self._configure_button(button)
 
@@ -39,13 +49,13 @@ class CTkToggleGroup:
 
         Args:
             button (CTkToggleButton): The button to add.
-        
+
         Raises:
             TypeError: If button is not an instance of CTkToggleButton.
         """
         if not isinstance(button, CTkToggleButton):
             raise TypeError("button must be an instance of CTkToggleButton.")
-        
+
         self._configure_button(button)
         self.buttons.append(button)
 
@@ -55,13 +65,13 @@ class CTkToggleGroup:
 
         Args:
             button (CTkToggleButton): The button to remove.
-        
+
         Raises:
             TypeError: If button is not an instance of CTkToggleButton.
         """
         if not isinstance(button, CTkToggleButton):
             raise TypeError("button must be an instance of CTkToggleButton.")
-        
+
         if button in self.buttons:
             button.configure(command=None)
             self.buttons.remove(button)
@@ -72,13 +82,13 @@ class CTkToggleGroup:
 
         Args:
             button (CTkToggleButton): The button to activate.
-        
+
         Raises:
             TypeError: If button is not an instance of CTkToggleButton.
         """
         if not isinstance(button, CTkToggleButton):
             raise TypeError("button must be an instance of CTkToggleButton.")
-        
+
         self.deactivate_all()
         button.set_toggle_state(True)
 
@@ -111,31 +121,50 @@ class CTkToggleGroup:
         """
         Configure a button for the group.
 
+        Wraps the button's existing command so that the group's toggle logic
+        fires first, then the original callback (e.g. ``on_sidebar_refresh``) fires
+        immediately after.  This preserves all downstream side-effects while giving
+        the group full control over activation/deactivation state.
+
         Args:
             button (CTkToggleButton): The button to configure.
-        
+
         Raises:
             TypeError: If button is not an instance of CTkToggleButton.
         """
         if not isinstance(button, CTkToggleButton):
             raise TypeError("button must be an instance of CTkToggleButton.")
-        
+
         button.toggle_group = self
-        button.configure(command=lambda b=button: self._handle_button_toggle(b))
+        original_cmd = button.cget("command")  # preserve caller-supplied callback
+
+        def wrapped(b=button, orig=original_cmd):
+            self._handle_button_toggle(b)
+            if orig:
+                orig()
+
+        button.configure(command=wrapped)
 
     def _handle_button_toggle(self, button: CTkToggleButton):
         """
         Handle toggle logic for a button.
 
+        When ``allow_deactivate`` is True, clicking an already-active button
+        deactivates it (no button remains active).  When False, clicking an
+        already-active button is a no-op (radio-button semantics).
+
         Args:
             button (CTkToggleButton): The button that was toggled.
-        
+
         Raises:
             TypeError: If button is not an instance of CTkToggleButton.
         """
         if not isinstance(button, CTkToggleButton):
             raise TypeError("button must be an instance of CTkToggleButton.")
-        
-        if not button.get_toggle_state():
-            self.set_active_button(button)
 
+        if button.get_toggle_state():
+            if self.allow_deactivate:
+                button.set_toggle_state(False)
+            # else: already active and deactivation not allowed — leave as-is.
+        else:
+            self.set_active_button(button)
