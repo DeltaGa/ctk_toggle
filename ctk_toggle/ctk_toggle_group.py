@@ -165,6 +165,6 @@ class CTkToggleGroup:
         if button.get_toggle_state():
             if self.allow_deactivate:
                 button.set_toggle_state(False)
-            # else: already active and deactivation not allowed — leave as-is.
+            # else: already active and deactivation not allowed - leave as-is.
         else:
             self.set_active_button(button)

@@ -61,7 +61,7 @@ class CTkToggleButton(ctk.CTkButton):
 
         When the button belongs to a ``CTkToggleGroup``, all state management
         is delegated to the group's command wrapper (fired on ``<ButtonRelease-1>``).
-        This binding (``<Button-1>``) must therefore do nothing in that case —
+        This binding (``<Button-1>``) must therefore do nothing in that case -
         acting here would unconditionally activate the button and prevent the
         group from implementing deactivate-on-reclick logic.
 

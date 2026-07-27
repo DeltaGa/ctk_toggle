@@ -1,236 +1,176 @@
-<img src="https://github.com/DeltaGa/ctk_toggle/blob/main/assets/thumbnail.jpg" alt="thumbnail">
+<img src="https://raw.githubusercontent.com/DeltaGa/ctk_toggle/main/assets/thumbnail.jpg" alt="ctk_toggle thumbnail">
+
+[![Python](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![CustomTkinter](https://img.shields.io/badge/CustomTkinter-5.1.0+-green.svg)](https://github.com/TomSchimansky/CustomTkinter)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+# CTk Toggle v1.0.4
+
+## Toggle Buttons and Toggle Groups for CustomTkinter
+
+**Version:** 1.0.4  
+**Release Date:** July 27, 2026  
+**Python:** 3.7+  
+**CustomTkinter:** 5.1.0+
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [System Requirements](#system-requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Examples](#examples)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Changelog](#changelog)
+- [Credits](#credits)
+
+---
 
 ## Overview
-`ctk_toggle` is a lightweight and easy-to-use Python package designed to simplify the creation and management of toggle buttons and toggle groups using CustomTkinter. With it, you can seamlessly integrate visually appealing toggle buttons into your CustomTkinter-based GUI applications. The package supports dynamic group behavior, customizable colors, and robust state management, making it ideal for modern, interactive user interfaces.
 
-## Features
-- Create toggle buttons with customizable states.
-- Group buttons for coordinated toggling.
-- Easily manage toggle states programmatically.
+`ctk_toggle` adds toggle buttons and toggle groups to CustomTkinter. A `CTkToggleButton` extends the standard button with a persistent on/off state and a distinct toggled color. A `CTkToggleGroup` coordinates a set of buttons so that activating one deactivates the others, giving radio-style selection without leaving the CustomTkinter look and feel.
+
+### Key Capabilities
+
+- **Stateful toggle button** - A `CTkButton` subclass with a persistent boolean state and a toggled color
+- **Coordinated groups** - Single-active selection across a set of buttons
+- **Programmatic control** - Read and set state, enable and disable, and query the active button in code
+- **Validated inputs** - Constructor and setter arguments are type- and value-checked, raising `TypeError` or `ValueError`
+- **Drop-in styling** - Accepts the full `CTkButton` keyword set through `**kwargs`
+
+---
+
+## System Requirements
+
+- **Python:** 3.7 or later
+- **CustomTkinter:** 5.1.0 or later
+
+---
 
 ## Installation
-Install via pip:
+
 ```bash
 pip install ctk_toggle
 ```
+
+---
+
 ## Usage
-Import modules:
+
 ```python
+import customtkinter as ctk
 from ctk_toggle import CTkToggleButton, CTkToggleGroup
+
+root = ctk.CTk()
+
+group = CTkToggleGroup()
+for label in ("Day", "Week", "Month"):
+    button = CTkToggleButton(root, text=label, toggle_group=group)
+    button.pack(padx=10, pady=5)
+
+root.mainloop()
 ```
-Check the [examples/](https://github.com/DeltaGa/ctk_toggle/tree/main/examples) directory for usage examples.
-Clean and beautiful UI made easier with `ctk_toggle` by saving precious space. See [demonstration video](https://github.com/user-attachments/assets/177e50ae-a0a8-4eac-b968-b7c3a6692d01).
+
+Activating any button in the group deactivates the others. Without a group, each button toggles independently.
+
+---
+
+## API Reference
+
+### CTkToggleButton
+
+A `customtkinter.CTkButton` subclass with toggle behavior.
+
+**Constructor:** `CTkToggleButton(master=None, toggle_color="#c1e2c5", disable_color="lightgrey", toggle_group=None, **kwargs)`
+
+| Method | Description |
+|--------|-------------|
+| `toggle(event=None)` | Flip the toggle state and update appearance |
+| `set_toggle_state(state: bool)` | Set the state explicitly and refresh the color |
+| `get_toggle_state() -> bool` | Return the current toggle state |
+| `enable()` | Enable the button |
+| `disable()` | Disable the button |
+
+### CTkToggleGroup
+
+Coordinates single-active selection across a set of buttons.
+
+**Constructor:** `CTkToggleGroup(buttons=None, disable_color="lightgrey")`
+
+| Method | Description |
+|--------|-------------|
+| `add_button(button)` | Add a button to the group |
+| `remove_button(button)` | Remove a button from the group |
+| `set_active_button(button)` | Activate one button and deactivate the rest |
+| `deactivate_all()` | Deactivate every button in the group |
+| `get_active_button() -> Optional[CTkToggleButton]` | Return the active button, or `None` |
+
+Invalid arguments raise `TypeError` for wrong types and `ValueError` for invalid values.
+
+---
+
+## Examples
+
+Runnable examples are in the [`examples/`](examples/) directory:
+
+- `example1.py`
+- `example2.py`
+- `example3.py`
+
+---
+
+## Troubleshooting
+
+### TypeError when constructing a group
+
+**Cause:** `buttons` is not a list of `CTkToggleButton` instances  
+**Solution:** Pass a list of `CTkToggleButton` objects, or omit the argument and add buttons with `add_button`.
+
+### ValueError on a color argument
+
+**Cause:** `toggle_color` or `disable_color` is not a string  
+**Solution:** Provide colors as strings, for example `"#c1e2c5"` or `"lightgrey"`.
+
+---
 
 ## Contributing
-See [CONTRIBUTING.md](https://github.com/DeltaGa/ctk_toggle/blob/main/CONTRIBUTING.md).
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/DeltaGa/ctk_toggle/blob/main/LICENSE) file for details.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Code follows the conventions in [STYLE.md](STYLE.md) and [OPTIMIZATION.md](OPTIMIZATION.md).
 
-## Documentation
-**CTkToggleGroup**
-```python
-class CTkToggleGroup:
-    """
-    A group for managing toggle buttons.
-    """
+---
 
-    def __init__(self, buttons: Optional[List[CTkToggleButton]] = None, disable_color: str = "lightgrey"):
-        """
-        Initialize a CTkToggleGroup.
+## Changelog
 
-        Args:
-            buttons (Optional[List[CTkToggleButton]]): List of buttons in the group.
-            disable_color (str): Color for disabled buttons.
-        
-        Raises:
-            TypeError: If buttons is not a list of CTkToggleButton instances or None.
-            ValueError: If disable_color is not a string.
-        """
+### Version 1.0.4 (July 27, 2026)
 
-    def add_button(self, button: CTkToggleButton):
-        """
-        Add a button to the group.
+- Toggle button and toggle group widgets for CustomTkinter.
+- Group-coordinated single-active selection.
+- Programmatic state control with validated constructor and setter arguments.
 
-        Args:
-            button (CTkToggleButton): The button to add.
-        
-        Raises:
-            TypeError: If button is not an instance of CTkToggleButton.
-        """
-
-    def remove_button(self, button: CTkToggleButton):
-        """
-        Remove a button from the group.
-
-        Args:
-            button (CTkToggleButton): The button to remove.
-        
-        Raises:
-            TypeError: If button is not an instance of CTkToggleButton.
-        """
-
-    def set_active_button(self, button: CTkToggleButton):
-        """
-        Activate a specific button.
-
-        Args:
-            button (CTkToggleButton): The button to activate.
-        
-        Raises:
-            TypeError: If button is not an instance of CTkToggleButton.
-        """
-
-    def deactivate_all(self):
-        """
-        Deactivate all buttons in the group.
-        """
-
-    def get_active_button(self) -> Optional[CTkToggleButton]:
-        """
-        Get the currently active button, if any.
-
-        Returns:
-            Optional[CTkToggleButton]: The currently active button, or None if no button is active.
-        """
-
-    def _update_buttons(self):
-        """
-        Update all buttons when one is disabled.
-        """
-
-    def _configure_button(self, button: CTkToggleButton):
-        """
-        Configure a button for the group.
-
-        Args:
-            button (CTkToggleButton): The button to configure.
-        
-        Raises:
-            TypeError: If button is not an instance of CTkToggleButton.
-        """
-
-    def _handle_button_toggle(self, button: CTkToggleButton):
-        """
-        Handle toggle logic for a button.
-
-        Args:
-            button (CTkToggleButton): The button that was toggled.
-        
-        Raises:
-            TypeError: If button is not an instance of CTkToggleButton.
-        """
-```
-
-**CTkToggleButton**
-```python
-class CTkToggleButton(ctk.CTkButton):
-    """
-    A CustomTkinter button with toggle functionality.
-    """
-
-    def __init__(
-        self,
-        master=None,
-        toggle_color: str = "#c1e2c5",
-        disable_color: str = "lightgrey",
-        toggle_group: Optional[Any] = None,
-        **kwargs,
-    ):
-        """
-        Initialize a CTkToggleButton with toggle functionality.
-
-        Args:
-            master: Parent widget.
-            toggle_color (str): Color when toggled.
-            disable_color (str): Color when disabled.
-            toggle_group (Optional[CTkToggleGroup]): Group to coordinate toggling.
-            **kwargs: Additional keyword arguments for CTkButton.
-        
-        Raises:
-            ValueError: If toggle_color or disable_color is not a string.
-            TypeError: If toggle_group is not an instance of CTkToggleGroup or None.
-        """
-
-    def toggle(self, event=None):
-        """
-        Handle button toggle behavior.
-
-        Args:
-            event: The event that triggered the toggle.
-        
-        Raises:
-            RuntimeError: If the button is in an invalid state.
-        """
-
-    def set_toggle_state(self, state: bool):
-        """
-        Set the toggle state and update appearance.
-
-        Args:
-            state (bool): The new toggle state.
-        
-        Raises:
-            ValueError: If state is not a boolean.
-        """
-
-    def get_toggle_state(self) -> bool:
-        """
-        Get the current toggle state.
-
-        Returns:
-            bool: The current toggle state.
-        
-        Raises:
-            RuntimeError: If the button is in an invalid state.
-        """
-
-    def enable(self):
-        """
-        Enable the button.
-        
-        Raises:
-            RuntimeError: If the button is already enabled.
-        """
-
-    def disable(self):
-        """
-        Disable the button.
-        
-        Raises:
-            RuntimeError: If the button is already disabled.
-        """
-
-    def _update_fg_color(self):
-        """
-        Update the foreground color based on the toggle state.
-        """
-```
+---
 
 ## Credits
 
 ### Author
-- **T. K. Joram Smith (DeltaGa)**  
-  Creator and developer of the CTkToggleButton and CTkToggleGroup classes.  
-  
-  Email: dev.github.tkjoramsmith@outlook.com
-  GitHub: [https://github.com/DeltaGa](https://github.com/DeltaGa)
+
+**Tchicdje Kouojip Joram Smith (DeltaGa)**  
+Email: dev.github.tkjoramsmith@outlook.com  
+GitHub: [https://github.com/DeltaGa](https://github.com/DeltaGa)
 
 ### Acknowledgments
-- **CustomTkinter**: The CustomTkinter library provided the foundation for building modern and customizable widgets in this project.  
-  GitHub: [https://github.com/TomSchimansky/CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
 
-- **Open Source Community**: Inspiration and guidance from various open-source contributions and community members.
+- [**CustomTkinter**](https://github.com/TomSchimansky/CustomTkinter): The widget foundation this package builds on.
 
-- **Python Community**: For creating an ever-evolving ecosystem that empowers developers worldwide.
+---
 
-### Contributions from Large Language Models
+## License
 
-This project was developed with support and inspiration from state-of-the-art Large Language Models (LLMs), including but not limited to open/free-to-use models such as:
+Released under the MIT License. See [LICENSE](LICENSE) for details.
 
-- OpenAI's GPT series.
-- Open-source language models provided by communities like Hugging Face and EleutherAI.
+---
 
-These models were instrumental in providing guidance, code refactoring suggestions, and improving the overall quality of the project documentation. Special thanks to the developers, researchers, and communities who have contributed to the field of natural language processing and made these models publicly available for everyone.
-
-The integration of such tools demonstrates how artificial intelligence can augment human creativity and productivity in software development and beyond.
+© 2026 DeltaGa. All rights reserved.
